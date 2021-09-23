@@ -37,6 +37,9 @@ def getImageWeight(data): ## accepts array[x][y] as data, only given the specifi
 def decreaseImageWeight(data): ## accepts array[x][y] as data, only given the specific attribute
     return (data[1] -1)
 
+def increaseImageWeight(data): ## accepts array[x][y] as data, only given the specific attribute
+    return (data[1] +1)
+
 def getNumAttributes(data):
     return len(data)
 
@@ -50,6 +53,14 @@ def getCount(data): ## accepts array[x]
         attributeCount += (getImageWeight(data[j]))
         j += 1
     return attributeCount
+
+def isDuplicate(listCheck, fullList):
+    # do not sory listCheck
+    for list in fullList:
+        # do not sort list
+        if listCheck == list:
+            return True
+    return False
 
 #print(attributesArray[0])
 #print(attributesArray[0][1])
@@ -82,25 +93,38 @@ print("Total number of variations: " + str(getCount(attributesArray[0])))
 i = 0
 counter = getCount(attributesArray[0])
 imageTotal = 0
+imageArray = []
 while counter >= 0: # stop when getCount = 0, ie. no more attributes left
     while i < len(attributesArray[i]):
+        tempImageArray = []
         max = getNumAttributes(attributesArray[i])
         rand = getRandom(1,max)
         while getImageWeight(attributesArray[i][rand]) <= 0: # loop until find an attribute with 
             rand = getRandom(1,max)
-        imageTotal +=1
-        print("Count("+ str(counter) + ") Total (" + str(imageTotal) + ") " + attributesArray[i][rand][0] + ' Rand: ' + str(rand))
-        print("Old Weight: " + str(getImageWeight(attributesArray[i][rand])))
+        tempImageArray.append(rand)
+        #print("Count("+ str(counter) + ") Total (" + str(imageTotal) + ") " + attributesArray[i][rand][0] + ' Rand: ' + str(rand))
+        #print("Old Weight: " + str(getImageWeight(attributesArray[i][rand])))
         attributesArray[i][rand][1] -= 1 # decrease selected image wieght by 1
-        print("New Weight: " + str(getImageWeight(attributesArray[i][rand])))
+        #print("New Weight: " + str(getImageWeight(attributesArray[i][rand])))
         
         i += 1
         if i >= len(attributesArray):
             i = 0
-    
+            ## duplication check
+            if isDuplicate(tempImageArray, imageArray):
+                print("Diplicate found!")
+                # undo image weight subtraction?
+            else:
+                # do image weight subtraction?
+                imageArray.append(tempImageArray)
+                imageTotal +=1
+            print("Total Images: " + str(imageTotal))
+            
+        
         counter = getCount(attributesArray[-1])
         if counter <= 0:
             exit()
+    
 
 
 #print(getImageName(imagesArray[1][1][0]))
