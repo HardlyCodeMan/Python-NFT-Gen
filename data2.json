@@ -1,0 +1,15 @@
+{
+    "background": [
+        ["background 0", 7],
+        ["background 1", 8]
+    ],
+    "moon": [
+        ["moon 0", 5],
+        ["moon 1", 10]
+    ],
+    "tree": [
+        ["tree 0", 6],
+        ["tree 1", 5],
+        ["tree 2", 4]
+    ]
+}
