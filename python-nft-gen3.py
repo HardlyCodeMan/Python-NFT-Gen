@@ -70,8 +70,8 @@ def weightReset(tempImageArray):
     length = len(attributesArray[i])
     while i < length:
         attributesArray[i][tempImageArray[i]][1] += 1
-        print("Resetting attribute of: ")
-        print(attributesArray[i][tempImageArray[i]])
+        #print("Resetting attribute of: ")
+        #print(attributesArray[i][tempImageArray[i]])
         i = i + 1
 
 def zeroCheck(attributesArray):
@@ -85,9 +85,14 @@ def zeroCheck(attributesArray):
         i = i + 1
 
     if weightCount > 0:
+        #print("Weight Check Failed: " + str(weightCount) + " Remain")
         return False
     else:
         print("Zero Values Remain")
+        return True
+
+def totalCheck(imageTotal):
+    if imageTotal == 6635:
         return True
 
 ########  Main Random Generation Loop  ########
@@ -95,11 +100,19 @@ i = 0
 counter = getCount(attributesArray[0])
 imageTotal = 0
 imageArray = []
+zeroCheck(attributesArray[i])
 while counter >= 0: # stop when getCount = 0, ie. no more attributes left
+    if totalCheck(imageTotal):
+        print("Image limit reached: ", imageTotal)
+        print(imageArray)
+        break
+
+    if zeroCheck(attributesArray[i]):   # exit the loops if there are no more choices
+        break
+
     tempImageArray = []
     #print("Counter: ", counter)
-    if zeroCheck(attributesArray[i]):   # exit the loops if there are no more choices
-            break
+
 
     while i < len(attributesArray[i]):
         if zeroCheck(attributesArray[i]):   # exit the loops if there are no more choices
@@ -108,17 +121,17 @@ while counter >= 0: # stop when getCount = 0, ie. no more attributes left
         max = getNumAttributes(attributesArray[i])
         rand = getRandom(1,max)
 
-        print("Selecting from: " + str(rand))
-        print(attributesArray[i][rand])
-        print("With " + str(attributesArray[i][rand][1]) + " remaining")
+        #print("Selecting from: " + str(rand))
+        #print(attributesArray[i][rand])
+        #print("With " + str(attributesArray[i][rand][1]) + " remaining")
         
         while getImageWeight(attributesArray[i][rand]) == 0: # if the selected weight is 0 reselect
             if zeroCheck(attributesArray[i]):   # exit the loops if there are no more choices
                 break
 
             rand = getRandom(1,max)
-            print("Re-selecting from: " + str(rand))
-            print(attributesArray[i])
+            #print("Re-selecting from: " + str(rand))
+            #print(attributesArray[i])
             
         tempImageArray.append(rand)
 
@@ -127,11 +140,11 @@ while counter >= 0: # stop when getCount = 0, ie. no more attributes left
         j = i # for use with reversion
         i += 1
         if i >= len(attributesArray):
-            print("\nCurrent Image: ", tempImageArray)
+            #print("\nCurrent Image: ", tempImageArray)
             
             ## duplication check
             if isDuplicateTwo(imageArray, tempImageArray):
-                print("Diplicate found!")
+                #print("Diplicate found!")
 
                 # undo image weight subtraction
                 weightReset(tempImageArray)
@@ -144,7 +157,7 @@ while counter >= 0: # stop when getCount = 0, ie. no more attributes left
                 imageArray.append(tempImageArray)
                 imageTotal +=1
 
-                print("\nImage Array: ", imageArray)
+                #print("\nImage Array: ", imageArray)
                 print("Total Images: " + str(imageTotal) + "\n")
                 i = 0
                 tempImageArray = []
