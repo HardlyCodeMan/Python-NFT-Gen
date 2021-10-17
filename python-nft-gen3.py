@@ -60,15 +60,14 @@ def getCount(data): ## accepts array[x]
 def isDuplicateTwo(a, b):
     for i in range(len(a)):
         if a[i] == b:
-            print("Duplicate found: " + str(a[i]) + ' = ' + str(b))
+            #print("Duplicate found: " + str(a[i]) + ' = ' + str(b))
             return True
     return False
 
 # re increment the attributes involved in a duplicate image
 def weightReset(tempImageArray):
     i = 0
-    length = len(attributesArray[i])
-    while i < length:
+    while i < len(tempImageArray):
         attributesArray[i][tempImageArray[i]][1] += 1
         #print("Resetting attribute of: ")
         #print(attributesArray[i][tempImageArray[i]])
