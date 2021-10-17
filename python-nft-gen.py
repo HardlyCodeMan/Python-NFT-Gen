@@ -8,8 +8,8 @@ from PIL import Image
 # Main images dir
 baseDir = './images/'
 
-attributesFile  = open('./attributes.json',)
-#attributesFile  = open('./data2.json',)
+#attributesFile  = open('./attributes.json',)
+attributesFile  = open('./data2.json',)
 attributes = json.load(attributesFile)
 
 attributesArray = []
@@ -56,36 +56,38 @@ def getCount(data): ## accepts array[x]
 
 def isDuplicate(listCheck, fullList):
     # do not sory listCheck
+    #for list in fullList:
     for list in fullList:
-        # do not sort list
-        if listCheck == list:
+        check = 0
+        i = 0
+        if len(list) == len(listCheck):
+
+            while i < len(listCheck):
+                if list[i] == listCheck[i]:
+                    check += 1
+                i += 1
+            
+            if check == len(list):
+                return True
+        else:
+            print("lists no equal size")
+        
+    return False
+
+    
+
+def isDuplicateTwo(b, a):
+    for i in range(len(a)):
+        if a[i] == b:
+            print("Duplicate found: " + str(a[i]) + ' = ' + str(b))
             return True
     return False
 
-#print(attributesArray[0])
-#print(attributesArray[0][1])
-#print(attributesArray[0][1][0])
-#print(attributesArray[0][1][1])
-
-## return split data values
-#i = 0
-#while i < len(attributesArray):
-#    j = 1 # required offset by 1 due to data structure
-#    while j < (len(attributesArray[i])):
-#        print(getImageName(attributesArray[i][j]))
-#        print(getImageWeight(attributesArray[i][j]))
-#        j += 1
-#    i += 1
-
-## randomly generate attribte values
-#i = 0
-#while i < len(attributesArray):
-#    max = getNumAttributes(attributesArray[i])
-#    rand = getRandom(1,max)
-#    print(attributesArray[i][0] + ': ' + str(rand))
-#    i += 1
-
-
+#print(attributesArray[0])           # ['background', ['background 0', 7], ['background 1', 8]]
+#print(attributesArray[0][1])        # ['background 0', 7]
+#print(attributesArray[0][1][0])     # background 0
+#print(attributesArray[0][1][1])     # 7
+#exit()
 ## count max number of attributes
 print("Total number of variations: " + str(getCount(attributesArray[0])))
 
@@ -95,41 +97,69 @@ counter = getCount(attributesArray[0])
 imageTotal = 0
 imageArray = []
 while counter >= 0: # stop when getCount = 0, ie. no more attributes left
+    tempImageArray = []
+    print("Counter: ", counter)
     while i < len(attributesArray[i]):
-        tempImageArray = []
+        #print("Length: ", len(attributesArray[i]))
         max = getNumAttributes(attributesArray[i])
         rand = getRandom(1,max)
-        while getImageWeight(attributesArray[i][rand]) <= 0: # loop until find an attribute with 
+        #print("Rand: ", rand)
+        
+        while getImageWeight(attributesArray[i][rand]) == 0: # loop until find an attribute with generation space left
             rand = getRandom(1,max)
+            #print("NEW Rand: ", rand)
+            
         tempImageArray.append(rand)
+
+        attributesArray[i][rand][1] -= 1 # decrease selected image wieght by 1
+        #print("Current image array: ", tempImageArray)
+
         #print("Count("+ str(counter) + ") Total (" + str(imageTotal) + ") " + attributesArray[i][rand][0] + ' Rand: ' + str(rand))
         #print("Old Weight: " + str(getImageWeight(attributesArray[i][rand])))
-        attributesArray[i][rand][1] -= 1 # decrease selected image wieght by 1
+
         #print("New Weight: " + str(getImageWeight(attributesArray[i][rand])))
         
+        j = i # for use with 
         i += 1
         if i >= len(attributesArray):
-            i = 0
+            print("\nCurrent Image: ", tempImageArray)
+            
             ## duplication check
-            if isDuplicate(tempImageArray, imageArray):
+            #if isDuplicate(tempImageArray, imageArray):
+            if isDuplicateTwo(tempImageArray, imageArray):
                 print("Diplicate found!")
+                i = 0
+                tempImageArray = []
                 # undo image weight subtraction?
             else:
                 # do image weight subtraction?
                 imageArray.append(tempImageArray)
                 imageTotal +=1
-            print("Total Images: " + str(imageTotal))
+
+                print("\nImage Array: ", imageArray)
+                print("Total Images: " + str(imageTotal) + "\n")
+                i = 0
+                tempImageArray = []
             
-        
-        counter = getCount(attributesArray[-1])
-        if counter <= 0:
-            exit()
+    counter = getCount(attributesArray[-1])
+
+    if counter <= 0:
+        exit()
+    
+
     
 
 
 #print(getImageName(imagesArray[1][1][0]))
 
 exit()
+
+# Generate Metadata
+
+
+# Write Metadata
+
+
 # Load layer files
 background = './images/Aqua.png'
 fur = './images/Brown.png'

@@ -1,15 +1,15 @@
 {
     "background": [
-        ["background 0", 7],
-        ["background 1", 8]
+        ["background 0", 6],
+        ["background 1", 6]
     ],
     "moon": [
-        ["moon 0", 5],
-        ["moon 1", 10]
+        ["moon 0", 6],
+        ["moon 1", 6]
     ],
     "tree": [
-        ["tree 0", 6],
-        ["tree 1", 5],
+        ["tree 0", 4],
+        ["tree 1", 4],
         ["tree 2", 4]
     ]
 }
