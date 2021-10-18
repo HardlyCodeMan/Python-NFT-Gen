@@ -15,6 +15,7 @@ attributes.json
 *.code-workspace
 *.png
 *.db
+*.zip
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
