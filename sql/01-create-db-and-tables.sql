@@ -1,25 +1,63 @@
---Type this into terminal to load sqlite
---sqlite3 poundpups.db
- 
+/*
+RUNNING SQLITE
+
+Type `sqlite3`  into terminal.
+*/
+DROP TABLE IF EXISTS numbers;
+DROP TABLE IF EXISTS backgrounds;
+DROP TABLE IF EXISTS furs;
+DROP TABLE IF EXISTS clothes;
+DROP TABLE IF EXISTS eyes;
+DROP TABLE IF EXISTS accessories;
+DROP TABLE IF EXISTS noses;
+DROP TABLE IF EXISTS hats;
+DROP TABLE IF EXISTS images;
+/*
+NUMBERS TABLE
+
+Create a numbers table for joining later - https://stackoverflow.com/a/2472757
+*/
+CREATE TABLE numbers (
+   a_number int PRIMARY KEY NOT NULL
+);
+--Insert 1 to 6631
+INSERT INTO numbers (a_number)
+SELECT *
+FROM (
+    -- https://sqlite.org/lang_with.html
+    WITH RECURSIVE my_count(x) AS (
+        VALUES(1)
+        UNION ALL
+        SELECT x + 1
+        FROM my_count
+        WHERE x < 6631
+        )
+    SELECT x
+    FROM my_count
+) AS dt1;
+--
+/*
+STARTING TABLES
+
+Create our starting backgrounds table with amounts, the amounts are used with the numbers table to repeat values n times.
+*/
 CREATE TABLE backgrounds(
    name TEXT PRIMARY KEY NOT NULL,
-   amount INT
+   amount int
 );
- 
+--Insert the starting backgrounds and their apperance amounts.
 INSERT INTO backgrounds VALUES ("Aqua.png", 1751);
 INSERT INTO backgrounds VALUES ("Full Moon.png", 33);
 INSERT INTO backgrounds VALUES ("Light Grey.png", 2000);
 INSERT INTO backgrounds VALUES ("Purple.png", 1113);
 INSERT INTO backgrounds VALUES ("Underwater.png", 34);
 INSERT INTO backgrounds VALUES ("Yellow.png", 1700);
- 
-SELECT * FROM backgrounds;
- 
+--SELECT * FROM backgrounds;
+--Furs
 CREATE TABLE furs(
    name TEXT PRIMARY KEY NOT NULL,
-   amount INT
+   amount int
 );
- 
 INSERT INTO furs VALUES ("Brown.png", 2119);
 INSERT INTO furs VALUES ("Gold.png", 50);
 INSERT INTO furs VALUES ("Grey.png", 2083);
@@ -27,14 +65,12 @@ INSERT INTO furs VALUES ("Ice.png", 100);
 INSERT INTO furs VALUES ("Neon Green.png", 250);
 INSERT INTO furs VALUES ("Pink.png", 1049);
 INSERT INTO furs VALUES ("Purple.png", 980);
- 
-SELECT * FROM furs;
- 
+--SELECT * FROM furs;
+--Clothes
 CREATE TABLE clothes(
    name TEXT PRIMARY KEY NOT NULL,
-   amount INT
+   amount int
 );
- 
 INSERT INTO clothes VALUES ("Black Hoodie.png", 505);
 INSERT INTO clothes VALUES ("Blue Sweater.png", 571);
 INSERT INTO clothes VALUES ("Camo Hoodie.png", 233);
@@ -63,14 +99,12 @@ INSERT INTO clothes VALUES ("Tuxedo.png", 160);
 INSERT INTO clothes VALUES ("Vegeta Uniform.png", 90);
 INSERT INTO clothes VALUES ("White Singlet.png", 233);
 INSERT INTO clothes VALUES ("Yellow Hawaiian.png", 275);
- 
-SELECT * FROM clothes;
- 
+--SELECT * FROM clothes;
+--Eyes
 CREATE TABLE eyes(
    name TEXT PRIMARY KEY NOT NULL,
-   amount INT
+   amount int
 );
- 
 INSERT INTO eyes VALUES ("Angry.png", 661);
 INSERT INTO eyes VALUES ("Anime.png", 85);
 INSERT INTO eyes VALUES ("Black Eye.png", 296);
@@ -82,14 +116,12 @@ INSERT INTO eyes VALUES ("Squining.png", 850);
 INSERT INTO eyes VALUES ("Stoner.png", 598);
 INSERT INTO eyes VALUES ("Tired.png", 803);
 INSERT INTO eyes VALUES ("Worried.png", 639);
- 
-SELECT * FROM eyes;
- 
+--SELECT * FROM eyes;
+--Accessories
 CREATE TABLE accessories(
    name TEXT PRIMARY KEY NOT NULL,
-   amount INT
+   amount int
 );
- 
 INSERT INTO accessories VALUES ("3D Glasses.png", 75);
 INSERT INTO accessories VALUES ("Balaclava.png", 36);
 INSERT INTO accessories VALUES ("Baseball Bat.png", 500);
@@ -104,14 +136,12 @@ INSERT INTO accessories VALUES ("None.png", 2165);
 INSERT INTO accessories VALUES ("Pit Vipers.png", 476);
 INSERT INTO accessories VALUES ("Squirtle Squad Sunnies.png", 555);
 INSERT INTO accessories VALUES ("Wand.png", 520);
- 
-SELECT * FROM accessories;
- 
+--SELECT * FROM accessories;
+--Noses
 CREATE TABLE noses(
    name TEXT PRIMARY KEY NOT NULL,
-   amount INT
+   amount int
 );
- 
 INSERT INTO noses VALUES ("Ball Gagv.png", 140);
 INSERT INTO noses VALUES ("Blue.png", 253);
 INSERT INTO noses VALUES ("Ciggie.png", 60);
@@ -123,14 +153,12 @@ INSERT INTO noses VALUES ("Pringles Moustache.png", 80);
 INSERT INTO noses VALUES ("Red.png", 1170);
 INSERT INTO noses VALUES ("Tongue.png", 131);
 INSERT INTO noses VALUES ("Yellow.png", 1204);
- 
-SELECT * FROM noses;
- 
+--SELECT * FROM noses;
+--Hats
 CREATE TABLE hats(
    name TEXT PRIMARY KEY NOT NULL,
-   amount INT
+   amount int
 );
- 
 INSERT INTO hats VALUES ("Air Helmet.png", 57);
 INSERT INTO hats VALUES ("Black Hat.png", 322);
 INSERT INTO hats VALUES ("Blue Bandana.png", 170);
@@ -161,6 +189,21 @@ INSERT INTO hats VALUES ("Sorting Hat.png", 136);
 INSERT INTO hats VALUES ("Top Hat.png", 84);
 INSERT INTO hats VALUES ("Trainer Cap.png", 87);
 INSERT INTO hats VALUES ("Yellow Beanie.png", 307);
- 
-SELECT * FROM hats;
- 
+--SELECT * FROM hats;
+/*
+IMAGES
+
+Create our images table which we will use to build up the images randomly.
+Currently this table has an entry for each starting background matching the limits in the set up table.
+We are allowing NULLs and setting NULLs as the default so we can use this later for row selection.
+*/
+CREATE TABLE images(
+    background TEXT NULL DEFAULT NULL,
+    fur TEXT NULL DEFAULT NULL,
+    clothes TEXT NULL DEFAULT NULL,
+    eyes TEXT NULL DEFAULT NULL,
+    accessory TEXT NULL DEFAULT NULL,
+    nose TEXT NULL DEFAULT NULL,
+    hat TEXT NULL DEFAULT NULL
+);
+

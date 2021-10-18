@@ -1,0 +1,14 @@
+#Join files
+cat 01-create-db-and-tables.sql 02-add-backgrounds.sql 03-add-fur.sql 04-add-clothes.sql 05-add-eyes.sql 06-add-accessory.sql 07-add-nose.sql 08-add-hat.sql > db.sql
+
+# Load db
+sqlite3 pups.db < db.sql
+
+# Open db
+sqlite3 pups.db
+
+# Once open, dump the data
+.mode csv
+.output data.csv
+select * from images;
+.quit
