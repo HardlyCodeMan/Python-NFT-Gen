@@ -16,11 +16,11 @@ metadataTemplateFile = './metadata/metadatatemplate.json'
 counter = 2 # start at 2.png due to pre gen image and ids starting at 1
 
 # Load JSON Template
-metadataTemplateFile = open(metadataTemplateFile,)
+metadataTemplateFile = open(metadataTemplateFile, 'r')
 metadataTemplate = json.load(metadataTemplateFile)
 
 # Load CSV Data
-imageCSVFile = open(imageCSVFile)
+imageCSVFile = open(imageCSVFile, 'r')
 csvReader = csv.reader(imageCSVFile)
 
 # Load CSV into List
@@ -33,13 +33,15 @@ imageCSVFile.close()
 # Strip extension for adding value to meta data
 def stripExtension(dataArray):
     i = 0
-    while i < 7:
-        print(dataArray[i])
+    ouput = []
+    while i < len(dataArray):
         data = dataArray[i]
         split = data.split(".")
-        print(split[0])
+        ouput.append(split[0])
 
         i = i + 1
+    
+    return ouput
 
 def genImageName(imageID):
     imageName = str(imageID) + '.png'
@@ -53,12 +55,28 @@ def getRandom(min, max):
     return random.randrange(min,max,1)
 
 # Generate Metadata
-def genMetadata(imageID, arrayRow):
+def genMetadata(imageID, arrayRow, template):
     # Gen datafile name
+    i = 0
+    traits = []
+
     dataName = genMetadataName(imageID)
     outFile = outputDir + dataName
 
+    traits = stripExtension(arrayRow)
+    template['id'] = imageID
+
+    # Loop insert atributes
+    while i < len(traits):
+        template['attributes'][i]["value"] = traits[i]
+        i = i + 1
     
+    print("Saving :", outFile)
+
+    with open(outFile, "w") as data_file:
+        json.dump(template, data_file)
+
+    return True
 
 
 # Generate Image
@@ -106,8 +124,10 @@ def genImage(imageID, arrayRow):
     backgroundLayer.save(outFile, format="png")
 
     print("Saved: ", outFile)
+    return True
 
 ### Generate Images ###
 for row in imageRows:
     genImage(counter, row)
+    genMetadata(counter, row, metadataTemplate)
     counter += 1
