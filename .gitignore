@@ -14,6 +14,7 @@
 attributes.json
 *.code-workspace
 *.png
+*.jpg
 *.db
 *.zip
 
@@ -32,6 +33,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Oo]utput
+[Rr]ares
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
