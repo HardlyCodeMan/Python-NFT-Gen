@@ -64,7 +64,7 @@ def genMetadata(imageID, arrayRow, template):
     outFile = outputDir + dataName
 
     traits = stripExtension(arrayRow)
-    template['id'] = " + str(imageID) + "
+    template['id'] = imageID
 
     # Loop insert atributes
     while i < len(traits):
@@ -128,6 +128,6 @@ def genImage(imageID, arrayRow):
 
 ### Generate Images ###
 for row in imageRows:
-    genImage(counter, row)
+    #genImage(counter, row)
     genMetadata(counter, row, metadataTemplate)
     counter += 1
