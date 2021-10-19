@@ -64,7 +64,7 @@ def genMetadata(imageID, arrayRow, template):
     outFile = outputDir + dataName
 
     traits = stripExtension(arrayRow)
-    template['id'] = imageID
+    template['id'] = " + str(imageID) + "
 
     # Loop insert atributes
     while i < len(traits):
